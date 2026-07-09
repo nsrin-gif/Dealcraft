@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import { makeRound, runWaterfall, buildTruthTable, PARTICIPATION, SENIORITY } from './lib/waterfall';
 import { DisclaimerModal, DisclaimerFooter } from './components/Disclaimer';
+import LearnPanel from './components/LearnPanel';
 import Hero from './components/Hero';
 import RoundsEditor from './components/RoundsEditor';
 import DealInputs from './components/DealInputs';
@@ -14,25 +15,25 @@ function defaultRounds() {
   return [
     makeRound({
       name: 'Seed',
-      amountRaised: 1_500_000,
+      amountRaised: 2_000_000,
       prefMultiple: 1,
       participation: PARTICIPATION.NON_PARTICIPATING,
     }),
     makeRound({
       name: 'Series A',
-      amountRaised: 8_000_000,
+      amountRaised: 12_000_000,
       prefMultiple: 1,
       participation: PARTICIPATION.PARTICIPATING_UNCAPPED,
     }),
     makeRound({
       name: 'Series B',
-      amountRaised: 22_000_000,
-      prefMultiple: 1.5,
+      amountRaised: 30_000_000,
+      prefMultiple: 2,
       participation: PARTICIPATION.PARTICIPATING_UNCAPPED,
       dividendsEnabled: true,
-      dividendRatePct: 8,
-      dividendType: 'compounding',
-      dividendYears: 3,
+      dividendRatePct: 6,
+      dividendType: 'simple',
+      dividendYears: 5,
       dividendTiming: 'after',
     }),
   ];
@@ -40,9 +41,9 @@ function defaultRounds() {
 
 function defaultDeal() {
   return {
-    founderPct: 22,
-    poolPct: 12,
-    exitPrice: 45_000_000,
+    founderPct: 34,
+    poolPct: 10,
+    exitPrice: 65_000_000,
     txCostsPct: 2,
     carveOutPct: 0,
     founderInCarveOut: false,
@@ -53,6 +54,7 @@ function defaultDeal() {
 
 export default function App() {
   const [showDisclaimer, setShowDisclaimer] = useState(true);
+  const [showLearn, setShowLearn] = useState(false);
   const [rounds, setRounds] = useState(defaultRounds);
   const [deal, setDeal] = useState(defaultDeal);
   const builderRef = useRef(null);
@@ -68,13 +70,23 @@ export default function App() {
   return (
     <div className="flex min-h-screen flex-col bg-slate-950">
       {showDisclaimer && <DisclaimerModal onClose={() => setShowDisclaimer(false)} />}
+      {showLearn && <LearnPanel onClose={() => setShowLearn(false)} />}
 
       <header className="no-print sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 px-4 py-3 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <span className="text-sm font-semibold tracking-tight text-slate-100">
             Deal<span className="text-emerald-400">Craft</span>
           </span>
-          <span className="hidden text-xs text-slate-500 sm:block">Module 1A — Exit Waterfall Simulator</span>
+          <div className="flex items-center gap-3">
+            <span className="hidden text-xs text-slate-500 sm:block">Module 1A — Exit Waterfall Simulator</span>
+            <button
+              type="button"
+              onClick={() => setShowLearn(true)}
+              className="rounded-lg border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-300 hover:border-emerald-500 hover:text-emerald-400"
+            >
+              Learn the terms
+            </button>
+          </div>
         </div>
       </header>
 
