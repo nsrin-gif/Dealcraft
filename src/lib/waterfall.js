@@ -253,13 +253,24 @@ export function totalCapitalRaised(rounds) {
 
 export function buildTruthTable(inputs) {
   const raised = totalCapitalRaised(inputs.rounds);
-  const scenarios = [
-    { key: 'homeRun', label: 'Home Run', multiple: 10, blurb: '10x capital raised' },
-    { key: 'solid', label: 'Solid', multiple: 3, blurb: '~3x capital raised (2–4x range)' },
-    { key: 'messy', label: 'Messy', multiple: 1.5, blurb: '<2x capital raised' },
-  ];
+  // With no capital raised (bootstrapped), "multiple of capital raised" is undefined —
+  // fall back to an anchor derived from the entered exit price, keeping the same
+  // relative spread (10x / 3x / 1.5x) so the three scenarios still fan out sensibly.
+  const bootstrapped = raised <= 0;
+  const anchor = bootstrapped ? Math.max(inputs.exitPrice || 0, 1) / 3 : raised;
+  const scenarios = bootstrapped
+    ? [
+        { key: 'homeRun', label: 'Home Run', multiple: 10, blurb: 'high-multiple exit' },
+        { key: 'solid', label: 'Solid', multiple: 3, blurb: 'exit near your entered price' },
+        { key: 'messy', label: 'Messy', multiple: 1.5, blurb: 'soft exit' },
+      ]
+    : [
+        { key: 'homeRun', label: 'Home Run', multiple: 10, blurb: '10x capital raised' },
+        { key: 'solid', label: 'Solid', multiple: 3, blurb: '~3x capital raised (2–4x range)' },
+        { key: 'messy', label: 'Messy', multiple: 1.5, blurb: '<2x capital raised' },
+      ];
   return scenarios.map((s) => {
-    const exitPrice = raised * s.multiple;
+    const exitPrice = anchor * s.multiple;
     const result = runWaterfall({ ...inputs, exitPrice });
     return {
       ...s,

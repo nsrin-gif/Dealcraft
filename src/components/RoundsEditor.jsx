@@ -32,9 +32,14 @@ export default function RoundsEditor({ rounds, setRounds, founderPct, poolPct })
           ownershipPct={ownershipById.get(round.id) || 0}
           onChange={(next) => updateRound(round.id, next)}
           onRemove={() => removeRound(round.id)}
-          canRemove={rounds.length > 1}
+          canRemove
         />
       ))}
+      {rounds.length === 0 && (
+        <p className="rounded-xl border border-dashed border-slate-700 py-6 text-center text-sm text-slate-500">
+          No financing rounds — fully bootstrapped. Everything after costs and the option pool flows straight to you.
+        </p>
+      )}
       {rounds.length < 5 && (
         <button
           type="button"
