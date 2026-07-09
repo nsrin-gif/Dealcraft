@@ -64,4 +64,39 @@ export const GLOSSARY = {
     def: "A ledger of who owns what: every shareholder, option holder, and preferred series, and what percentage of the company each represents.",
     example: 'A clean cap table shows founders, the option pool, and each financing round as separate rows that sum to 100% fully diluted.',
   },
+  bootstrapped: {
+    term: 'Bootstrapped',
+    def: 'Funded entirely from founder savings, revenue, or informal contributions — no institutional or priced financing round has happened yet.',
+    example: 'A bootstrapped company has no liquidation preference stack at all: an exit splits proceeds by ownership % alone.',
+  },
+  'pre-seed': {
+    term: 'Pre-Seed',
+    def: "The earliest formal round, often before there's a product or real revenue — typically a small check from angels or friends and family.",
+    example: 'Pre-seed terms are usually simple: a modest amount, 1x non-participating preference, no dividends, no anti-dilution complexity.',
+  },
+  'sweat-equity': {
+    term: 'Sweat Equity',
+    def: 'Ownership earned through unpaid or below-market labor instead of cash — the value of time and effort someone puts in rather than money.',
+    example: 'A co-founder working full-time for no salary is contributing sweat equity worth their fair-market rate for every hour worked.',
+  },
+  slice: {
+    term: 'Slice',
+    def: 'The common unit the Slicing Pie model converts every contribution into — fair market value × a risk multiplier — so cash and sweat equity can be compared on one scale.',
+    example: 'Someone who contributes $10,000 in fair-market-value slices out of 100,000 total slices owns 10% under this model.',
+  },
+  multiplier: {
+    term: 'Risk Multiplier',
+    def: 'A factor applied to a contribution\'s fair market value to reflect how risky or scarce that type of contribution is — cash is scarcer and riskier to give up than time, so it typically carries a higher multiplier.',
+    example: 'The Slicing Pie model\'s defaults are 4x for cash and 2x for time: a $10,000 cash check is worth the same slices as $20,000 of fair-market-value unpaid labor.',
+  },
+  'grunt-fund': {
+    term: 'Grunt Fund / Deferred Income',
+    def: 'The running tally of unpaid fair-market value someone has contributed by working for less than they could earn elsewhere — effectively income converted into equity.',
+    example: 'Someone who could earn $80/hour but takes no salary for 500 hours has $40,000 sitting in the grunt fund, even though no cash changed hands.',
+  },
+  'fair-market-value': {
+    term: 'Fair Market Value (FMV)',
+    def: "What a contribution would cost at arm's length — a cash amount at face value, or time valued at the contributor's normal market rate.",
+    example: "A developer who'd normally charge $100/hour contributing 200 unpaid hours has an FMV contribution of $20,000, before any risk multiplier is applied.",
+  },
 };
