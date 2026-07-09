@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { makeContributor, makeContribution, defaultMultipliers, runSlicingPie, CONTRIBUTION_TYPE } from '../../lib/slicingPie';
+import { summarizeFnfSplit } from '../../lib/coachContext';
 import { SERIES_COLORS } from './seriesColors';
 import ContributorCard from './ContributorCard';
 import MultipliersPanel from './MultipliersPanel';
@@ -20,7 +21,7 @@ function defaultContributors() {
   };
 }
 
-export default function FriendsAndFamilyCalculator() {
+export default function FriendsAndFamilyCalculator({ onAskCoach }) {
   const seed = useMemo(defaultContributors, []);
   const [contributors, setContributors] = useState(seed.contributors);
   const [contributions, setContributions] = useState(seed.contributions);
@@ -107,6 +108,13 @@ export default function FriendsAndFamilyCalculator() {
           <p className="text-sm text-slate-500">Mix cash and time contributions and see a defensible ownership split.</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => onAskCoach?.(summarizeFnfSplit(contributors, contributions, multipliers, split))}
+            className="rounded-lg border border-emerald-700 bg-emerald-500/10 px-3 py-2 text-xs font-medium text-emerald-400 hover:bg-emerald-500/20"
+          >
+            Ask the Coach about this split
+          </button>
           <button type="button" onClick={exportJson} className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 hover:border-emerald-500 hover:text-emerald-400">
             Save split (JSON)
           </button>
