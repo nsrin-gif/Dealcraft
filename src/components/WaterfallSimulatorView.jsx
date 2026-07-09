@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { makeRound, runWaterfall, buildTruthTable } from '../lib/waterfall';
+import { summarizeWaterfallScenario } from '../lib/coachContext';
 import { seedToSeriesBPreset } from '../data/scenarioPresets';
 import Hero from './Hero';
 import ScenarioPicker from './ScenarioPicker';
@@ -13,7 +14,7 @@ import ExportBar from './ExportBar';
 
 const initialPreset = seedToSeriesBPreset();
 
-export default function WaterfallSimulatorView() {
+export default function WaterfallSimulatorView({ onAskCoach }) {
   const [activePresetId, setActivePresetId] = useState(initialPreset.id);
   const [rounds, setRounds] = useState(initialPreset.rounds);
   const [deal, setDeal] = useState(initialPreset.deal);
@@ -75,6 +76,16 @@ export default function WaterfallSimulatorView() {
         </div>
 
         <div className="mt-10 space-y-6">
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={() => onAskCoach?.(summarizeWaterfallScenario(deal, rounds, result))}
+              className="rounded-lg border border-emerald-700 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400 hover:bg-emerald-500/20"
+            >
+              Ask the Coach about these numbers
+            </button>
+          </div>
+
           <OwnershipVsPayout result={result} founderPct={deal.founderPct} />
 
           <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
