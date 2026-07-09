@@ -12,16 +12,16 @@ export default function Hero({ founderPct, exitPrice, setExitPrice, founderPayou
           DealCraft — Founder Equity Coach
         </span>
         <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight text-slate-50 sm:text-5xl">
-          You own {founderPct}%. Here's how you walk away with{' '}
+          {founderPct}% on the cap table.{' '}
           <span className={founderPayout < 1000 ? 'text-rose-400' : 'text-emerald-400'}>
             <AnimatedNumber value={founderPayout} compact />
-          </span>
-          .
+          </span>{' '}
+          in the wire transfer.
         </h1>
         <p className="mt-4 text-base text-slate-400">
-          Ownership percentage is not payout percentage. Drag the exit price below and watch a real preference stack —
-          seed, Series A, and Series B, with participation and compounding dividends — decide what you actually take
-          home. No signup.
+          Your ownership percentage and your payout are two different calculations. Drag the exit price below and
+          watch a real preference stack — liquidation preferences, participation, and dividends — decide the gap
+          between them. No signup.
         </p>
 
         <div className="mt-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
