@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GLOSSARY } from '../data/glossary';
+import { GLOSSARY, CONTEXTS } from '../data/glossary';
 
 const HOW_TO_GUIDES = {
   waterfall: {
@@ -66,15 +66,20 @@ const HOW_TO_GUIDES = {
   },
 };
 
-function GlossaryList({ query }) {
+function GlossaryList({ query, context }) {
   const entries = Object.entries(GLOSSARY).filter(([, v]) => {
+    if (context && !v.contexts?.[context]) return false;
     if (!query) return true;
     const q = query.toLowerCase();
     return v.term.toLowerCase().includes(q) || v.def.toLowerCase().includes(q);
   });
 
   if (entries.length === 0) {
-    return <p className="py-6 text-center text-sm text-slate-500">No terms match "{query}".</p>;
+    return (
+      <p className="py-6 text-center text-sm text-slate-500">
+        {query ? `No terms match "${query}".` : "No terms have a note for this context yet."}
+      </p>
+    );
   }
 
   return (
@@ -87,6 +92,12 @@ function GlossaryList({ query }) {
             <span className="font-medium text-slate-400">Example: </span>
             {v.example}
           </dd>
+          {context && v.contexts?.[context] && (
+            <dd className="mt-2 rounded-lg border border-emerald-900/40 bg-emerald-950/20 p-2.5 text-xs leading-relaxed text-emerald-200/90">
+              <span className="font-semibold text-emerald-400">In {CONTEXTS[context]}: </span>
+              {v.contexts[context]}
+            </dd>
+          )}
         </div>
       ))}
     </dl>
@@ -97,6 +108,7 @@ export default function LearnPanel({ onClose }) {
   const [tab, setTab] = useState('how-to');
   const [guide, setGuide] = useState('waterfall');
   const [query, setQuery] = useState('');
+  const [context, setContext] = useState(null);
 
   return (
     <div className="no-print fixed inset-0 z-[90] flex justify-end bg-black/60" onClick={onClose}>
@@ -170,7 +182,33 @@ export default function LearnPanel({ onClose }) {
                 placeholder="Search terms…"
                 className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-emerald-500"
               />
-              <GlossaryList query={query} />
+              <p className="mb-1.5 mt-3 text-[11px] font-medium uppercase tracking-wide text-slate-600">
+                See what each term means in context
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setContext(null)}
+                  className={`rounded-full px-3 py-1 text-xs font-medium ${
+                    context === null ? 'bg-emerald-500/15 text-emerald-400' : 'border border-slate-700 text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  All terms
+                </button>
+                {Object.entries(CONTEXTS).map(([key, label]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setContext(key)}
+                    className={`rounded-full px-3 py-1 text-xs font-medium ${
+                      context === key ? 'bg-emerald-500/15 text-emerald-400' : 'border border-slate-700 text-slate-400 hover:text-slate-200'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <GlossaryList query={query} context={context} />
             </div>
           )}
         </div>
